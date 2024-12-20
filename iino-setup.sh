@@ -105,3 +105,12 @@ sudo apt install -y \
   linuxptp \
   python3-usb \
   python3-serial
+
+#
+# Install iinomob2.autoware
+#
+cd ~
+git clone git@github.com:gekidaniino001/iinomob2.autoware
+cd iinomob2.autowawre
+git switch tm/update-repos
+bash install.sh
