@@ -118,5 +118,4 @@ chmod 600 ~/.ssh/id_rsa
 cd ~
 git clone git@github.com:gekidaniino001/iinomob2.autoware
 cd ~/iinomob2.autoware
-git switch tm/update-repos
 bash install.sh
