@@ -52,7 +52,7 @@ sudo apt install -y \
 # rosdep
 #
 sudo apt update
-[[ -e /etc/ros/rosdep/sources.list.d/20-default.list ]] && rm /etc/ros/rosdep/sources.list.d/20-default.list
+[[ -e /etc/ros/rosdep/sources.list.d/20-default.list ]] && sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
 sudo rosdep init
 rosdep update
 
@@ -114,7 +114,8 @@ sudo apt install -y \
 #
 # Install iinomob2.autoware
 #
-chmod 600 ~/.ssh/id_rsa
+sudo chown $(whoami) ~/.ssh/id_rsa
+sudo chmod 600 ~/.ssh/id_rsa
 cd ~
 git clone git@github.com:gekidaniino001/iinomob2.autoware
 cd ~/iinomob2.autoware
