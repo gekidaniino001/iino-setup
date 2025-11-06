@@ -108,6 +108,7 @@ sudo apt install -y \
   ros-humble-urg-node \
   ethtool \
   linuxptp \
+  python3-evdev \
   python3-usb \
   python3-serial
 
