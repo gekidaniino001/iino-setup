@@ -112,6 +112,9 @@ sudo apt install -y \
   python3-usb \
   python3-serial
 
+pip3 install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip3 install pydantic
+
 #
 # Install iinomob2.autoware
 #
