@@ -115,6 +115,9 @@ sudo apt install -y \
 pip3 install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 pip3 install pydantic
 
+pip3 install --upgrade requests urllib3
+pip3 install pydantic pygame
+
 #
 # Install iinomob2.autoware
 #
