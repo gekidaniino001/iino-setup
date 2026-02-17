@@ -109,6 +109,7 @@ sudo apt install -y \
   ethtool \
   linuxptp \
   python3-evdev \
+  python3-shapely \
   python3-usb \
   python3-serial
 
