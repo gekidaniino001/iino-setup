@@ -185,8 +185,8 @@ cd ~
 git clone git@github.com:gekidaniino001/iinomob2.autoware
 cd ~/iinomob2.autoware
 
-# for test
-git fetch origin kon_fix_ssd_lan
-git switch kon_fix_ssd_lan
+### for test
+## git fetch origin kon_fix_ssd_lan
+## git switch kon_fix_ssd_lan
 
 bash install.sh
