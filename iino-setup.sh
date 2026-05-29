@@ -17,6 +17,7 @@ sudo apt update
 sudo apt install -y ros-humble-desktop
 if ! egrep "^source /opt/ros/humble/setup.bash" $HOME/.bashrc > /dev/null; then
   echo ""
+  echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
   echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 fi
 source ~/.bashrc
