@@ -111,6 +111,7 @@ sudo apt install -y \
   ros-humble-urg-node \
   ethtool \
   linuxptp \
+  net-tools \
   python3-evdev \
   python3-shapely \
   python3-usb \
