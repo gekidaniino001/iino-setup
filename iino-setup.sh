@@ -122,6 +122,59 @@ pip3 install --upgrade requests urllib3
 pip3 install pydantic pygame
 
 #
+# User Group
+#
+sudo usermod -aG dialout gekidaniino
+sudo usermod -aG input gekidaniino
+
+#
+# Auto boot (enabled=false)
+#
+auto_dir=~/.config/autostart
+[[ -e ${auto_dir} ]] || mkdir -p ${auto_dir}
+
+auto_path=${auto_dir}/auto_boot.sh.desktop
+[[ -e ${auto_path} ]] || cat >${auto_path} <<EOF
+[Desktop Entry]
+Type=Application
+Exec=/home/gekidaniino/iinomob2.autoware/src/iino.universe/boot_scripts/auto_boot.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=false
+Name[ja_JP]=iino
+Name=iino
+Comment[ja_JP]=
+Comment=
+EOF
+
+#
+# keyboad no caps
+#
+kbd_path=/etc/default/keyboard
+if grep '^XKBOPTIONS=""' ${kbd_path} >/dev/null; then
+  [[ -e ${kbd_path}.0 ]] || sudo cp -p ${kbd_path} ${kbd_path}.0
+  sudo sed -i 's/^XKBOPTIONS=""/XKBOPTIONS="ctrl:nocaps"/' ${kbd_path}
+fi
+
+#
+# Alias
+#
+[[ -e ~/.bash_aliases ]] || cat > ~/.bash_aliases <<EOF
+alias iinogui='~/iinomob2.autoware/src/iino.universe/boot_scripts/gui.sh'
+alias iinokill='~/iinomob2.autoware/src/iino.universe/boot_scripts/iino_kill.sh'
+alias ccb='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release'
+alias ccbbp='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --base-paths '
+alias ccbp='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-select'
+alias 3_bash='. ~/iinomob2.autoware/src/iino.universe/boot_scripts/setup.bash'
+alias iinocd='cd ~/iinomob2.autoware/src/iino.universe'
+alias scd='cd ~/iinomob2.autoware/src/iino.scenario'
+alias rriino='ros2 run iino_common'
+alias rviztest='rviz2 -d ~/iinomob2.autoware/src/iino.universe/launcher/iino_aw_launch/rviz/test.rviz'
+alias camera_data_get='~/iinomob2.autoware/src/iino.universe/tool/get_raspberrypi_data.sh'
+source ~/ros2-aliases/ros2_simple_aliases.bash
+EOF
+
+#
 # Install iinomob2.autoware
 #
 sudo chown $(whoami) ~/.ssh/id_rsa
