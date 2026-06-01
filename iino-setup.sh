@@ -17,6 +17,7 @@ sudo apt update
 sudo apt install -y ros-humble-desktop
 if ! egrep "^source /opt/ros/humble/setup.bash" $HOME/.bashrc > /dev/null; then
   echo ""
+  echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
   echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 fi
 source ~/.bashrc
@@ -59,7 +60,11 @@ rosdep update
 #
 # RMW Implementation
 #
-wget -O /tmp/amd64.env https://raw.githubusercontent.com/autowarefoundation/autoware/main/amd64.env && source /tmp/amd64.env
+## wget -O /tmp/amd64.env https://raw.githubusercontent.com/autowarefoundation/autoware/main/amd64.env && source /tmp/amd64.env
+## URL not found 2026/05
+rmw_implementation=rmw_cyclonedds_cpp
+ROS_DISTRO=humble
+rosdistro=$ROS_DISTRO
 
 # For details: https://docs.ros.org/en/humble/How-To-Guides/Working-with-multiple-RMW-implementations.html
 rmw_implementation_dashed=$(eval sed -e "s/_/-/g" <<< "${rmw_implementation}")
@@ -108,6 +113,7 @@ sudo apt install -y \
   ros-humble-urg-node \
   ethtool \
   linuxptp \
+  net-tools \
   python3-evdev \
   python3-shapely \
   python3-usb \
@@ -118,6 +124,59 @@ pip3 install pydantic
 
 pip3 install --upgrade requests urllib3
 pip3 install pydantic pygame
+
+#
+# User Group
+#
+sudo usermod -aG dialout gekidaniino
+sudo usermod -aG input gekidaniino
+
+#
+# Auto boot (enabled=false)
+#
+auto_dir=~/.config/autostart
+[[ -e ${auto_dir} ]] || mkdir -p ${auto_dir}
+
+auto_path=${auto_dir}/auto_boot.sh.desktop
+[[ -e ${auto_path} ]] || cat >${auto_path} <<EOF
+[Desktop Entry]
+Type=Application
+Exec=/home/gekidaniino/iinomob2.autoware/src/iino.universe/boot_scripts/auto_boot.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=false
+Name[ja_JP]=iino
+Name=iino
+Comment[ja_JP]=
+Comment=
+EOF
+
+#
+# keyboad no caps
+#
+kbd_path=/etc/default/keyboard
+if grep '^XKBOPTIONS=""' ${kbd_path} >/dev/null; then
+  [[ -e ${kbd_path}.0 ]] || sudo cp -p ${kbd_path} ${kbd_path}.0
+  sudo sed -i 's/^XKBOPTIONS=""/XKBOPTIONS="ctrl:nocaps"/' ${kbd_path}
+fi
+
+#
+# Alias
+#
+[[ -e ~/.bash_aliases ]] || cat > ~/.bash_aliases <<EOF
+alias iinogui='~/iinomob2.autoware/src/iino.universe/boot_scripts/gui.sh'
+alias iinokill='~/iinomob2.autoware/src/iino.universe/boot_scripts/iino_kill.sh'
+alias ccb='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release'
+alias ccbbp='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --base-paths '
+alias ccbp='colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-select'
+alias 3_bash='. ~/iinomob2.autoware/src/iino.universe/boot_scripts/setup.bash'
+alias iinocd='cd ~/iinomob2.autoware/src/iino.universe'
+alias scd='cd ~/iinomob2.autoware/src/iino.scenario'
+alias rriino='ros2 run iino_common'
+alias rviztest='rviz2 -d ~/iinomob2.autoware/src/iino.universe/launcher/iino_aw_launch/rviz/test.rviz'
+alias camera_data_get='~/iinomob2.autoware/src/iino.universe/tool/get_raspberrypi_data.sh'
+source ~/ros2-aliases/ros2_simple_aliases.bash
+EOF
 
 #
 # Network UDP buffer
@@ -133,4 +192,33 @@ sudo chmod 600 ~/.ssh/id_rsa
 cd ~
 git clone git@github.com:gekidaniino001/iinomob2.autoware
 cd ~/iinomob2.autoware
+
+PKG="setuptools"
+VER_TGT="59.6.0"
+VER_NOW=$( pip show $PKG | grep Version | tr -d ' ' | cut -d : -f2 )
+if [ "$VER_NOW" != "$VER_TGT" ]; then
+  pip install $PKG==$VER_TGT >/dev/null
+fi
+
+
+patch -p1 <<EOF
+--- a/install.sh
++++ b/install.sh
+@@ -18,7 +18,7 @@ rosdep update
+ 
+ rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
+ 
+-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
++colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --parallel-workers 4
+ 
+ pushd src/iino.universe/tool
+ ./inst_wx.py
+EOF
+
+
 bash install.sh
+
+source src/iino.universe/boot_scripts/setup.bash
+
+$TOOL_DIR/lan_setup.py
+$TOOL_DIR/ssd_setup.py
