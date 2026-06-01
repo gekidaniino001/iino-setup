@@ -63,6 +63,7 @@ rosdep update
 ## wget -O /tmp/amd64.env https://raw.githubusercontent.com/autowarefoundation/autoware/main/amd64.env && source /tmp/amd64.env
 ## URL not found 2026/05
 rmw_implementation=rmw_cyclonedds_cpp
+ROS_DISTRO=humble
 rosdistro=$ROS_DISTRO
 
 # For details: https://docs.ros.org/en/humble/How-To-Guides/Working-with-multiple-RMW-implementations.html
