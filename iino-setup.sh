@@ -186,8 +186,16 @@ cd ~
 git clone git@github.com:gekidaniino001/iinomob2.autoware
 cd ~/iinomob2.autoware
 
-### for test
-## git fetch origin kon_fix_ssd_lan
-## git switch kon_fix_ssd_lan
+PKG="setuptools"
+VER_TGT="59.6.0"
+VER_NOW=$( pip show $PKG | grep Version | tr -d ' ' | cut -d : -f2 )
+if [ "$VER_NOW" != "$VER_TGT" ]; then
+  pip install $PKG==$VER_TGT >/dev/null
+fi
 
 bash install.sh
+
+source src/iino.universe/boot_scripts/setup.bash
+
+$TOOL_DIR/lan_setup.py
+$TOOL_DIR/ssd_setup.py
