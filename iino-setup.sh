@@ -120,6 +120,12 @@ pip3 install --upgrade requests urllib3
 pip3 install pydantic pygame
 
 #
+# Network UDP buffer
+#
+echo "net.core.rmem_max=26214400" | sudo tee -a /etc/sysctl.conf
+echo "net.core.rmem_default=26214400" | sudo tee -a /etc/sysctl.conf
+
+#
 # Install iinomob2.autoware
 #
 sudo chown $(whoami) ~/.ssh/id_rsa
