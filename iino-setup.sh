@@ -194,6 +194,22 @@ if [ "$VER_NOW" != "$VER_TGT" ]; then
   pip install $PKG==$VER_TGT >/dev/null
 fi
 
+
+patch -p1 <<EOF
+--- a/install.sh
++++ b/install.sh
+@@ -18,7 +18,7 @@ rosdep update
+ 
+ rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
+ 
+-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
++colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --parallel-workers 4
+ 
+ pushd src/iino.universe/tool
+ ./inst_wx.py
+EOF
+
+
 bash install.sh
 
 source src/iino.universe/boot_scripts/setup.bash
