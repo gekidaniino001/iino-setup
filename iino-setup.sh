@@ -114,6 +114,7 @@ sudo apt install -y \
   ethtool \
   linuxptp \
   net-tools \
+  screen \
   python3-evdev \
   python3-shapely \
   python3-usb \
