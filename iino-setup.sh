@@ -180,6 +180,14 @@ source ~/ros2-aliases/ros2_simple_aliases.bash
 EOF
 
 #
+# rnlist, rtlist
+#
+sudo apt install fzf
+git clone https://github.com/kimushun1101/ros2-aliases.git $HOME/.local/ros2-aliases
+echo 'source $HOME/.local/ros2-aliases/ros2_aliases.bash' >> ~/.bashrc
+source ~/.bashrc
+
+#
 # Network UDP buffer
 #
 echo "net.core.rmem_max=26214400" | sudo tee -a /etc/sysctl.conf
