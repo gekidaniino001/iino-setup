@@ -114,6 +114,7 @@ sudo apt install -y \
   ethtool \
   linuxptp \
   net-tools \
+  nethogs \
   screen \
   python3-evdev \
   python3-shapely \
@@ -148,6 +149,20 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=false
 Name[ja_JP]=iino
 Name=iino
+Comment[ja_JP]=
+Comment=
+EOF
+
+auto_path=${auto_dir}/traffic_reader.desktop
+[[ -e ${auto_path} ]] || cat >${auto_path} <<EOF
+[Desktop Entry]
+Type=Application
+Exec=/home/gekidaniino/iinomob2.autoware/install/system_monitor/lib/system_monitor/traffic_reader
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[ja_JP]=traffic_reader
+Name=traffic_reader
 Comment[ja_JP]=
 Comment=
 EOF
