@@ -116,6 +116,7 @@ sudo apt install -y \
   net-tools \
   nethogs \
   screen \
+  cpulimit \
   python3-evdev \
   python3-shapely \
   python3-usb \
