@@ -200,6 +200,7 @@ EOF
 #
 sudo apt install fzf
 git clone https://github.com/kimushun1101/ros2-aliases.git $HOME/.local/ros2-aliases
+sed -i "s/--update=none/-n/" $HOME/.local/ros2-aliases/ros2_aliases.bash
 echo 'source $HOME/.local/ros2-aliases/ros2_aliases.bash' >> ~/.bashrc
 source ~/.bashrc
 
